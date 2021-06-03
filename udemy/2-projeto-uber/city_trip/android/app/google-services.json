@@ -1,0 +1,39 @@
+{
+  "project_info": {
+    "project_number": "865802069197",
+    "project_id": "city-trip-14e0c",
+    "storage_bucket": "city-trip-14e0c.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:865802069197:android:0adb3cd1e1e68a6815f584",
+        "android_client_info": {
+          "package_name": "br.com.lucasverissimo.city_trip"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "865802069197-fdk85a8ot6m3p0pi92rjjrqq9v1d1bgt.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyB1ZmQ-2bwL2jcT1UVn5mAGu43oSPvROJk"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "865802069197-fdk85a8ot6m3p0pi92rjjrqq9v1d1bgt.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
