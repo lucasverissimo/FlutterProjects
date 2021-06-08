@@ -104,7 +104,7 @@ class _CorridaState extends State<Corrida> with DisposableWidget {
 
         if(_statusRequisicao != StatusRequisicao.AGUARDANDO){
           print("Request diferente de aguardando");
-          UsuarioFirebase.atualizarDadosLocalizacao(widget.idRequisicao, position.latitude, position.longitude);
+          UsuarioFirebase.atualizarDadosLocalizacao(widget.idRequisicao, position.latitude, position.longitude, "motorista");
         }else{
           if(position != null){
             print("position diferente de null com request Aguardando");
@@ -171,22 +171,6 @@ class _CorridaState extends State<Corrida> with DisposableWidget {
 
   }
 
-  _recuperarRequisicao() async {
-    await Firebase.initializeApp();
-    String idRequisicao = widget.idRequisicao;
-    if(idRequisicao == null){
-      Navigator.pop(context);
-      return;
-    }
-
-    FirebaseFirestore db = FirebaseFirestore.instance;
-    DocumentSnapshot documentSnapshot = await db.collection("requisicoes")
-    .doc(idRequisicao)
-    .get();
-
-    _dadosRequisicao = documentSnapshot.data();
-    // _adicionarListenerRequisicao();
-  }
 
   _adicionarListenerRequisicao() async {
     await Firebase.initializeApp();
@@ -456,12 +440,19 @@ class _CorridaState extends State<Corrida> with DisposableWidget {
       nLon = longitudeOrigem;
     }
 
+    _myLocation =  CameraPosition(
+      target: LatLng(latitudeOrigem, longitudeOrigem),
+      zoom: 19,
+    );
+
+    _moveCamera(_myLocation);
+    /*
     _moveCameraBounds(
       LatLngBounds(
           northeast: LatLng(nLat, nLon),
           southwest: LatLng(sLat, sLon)
       ),
-    );
+    );*/
   }
 
 

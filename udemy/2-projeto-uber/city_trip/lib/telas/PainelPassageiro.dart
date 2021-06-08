@@ -91,7 +91,7 @@ class _PainelPassageiroState extends State<PainelPassageiro> {
 
       if(_idRequisicao != null && _idRequisicao.isNotEmpty){
         // atualiza local do passageiro se ele tiver uma requisicao
-        UsuarioFirebase.atualizarDadosLocalizacao(_idRequisicao, position.latitude, position.longitude);
+        UsuarioFirebase.atualizarDadosLocalizacao(_idRequisicao, position.latitude, position.longitude, "passageiro");
       }else{
 
         setState(() {
@@ -281,6 +281,12 @@ class _PainelPassageiroState extends State<PainelPassageiro> {
       .doc(firebaseUser.uid)
       .delete();
     });
+
+    _statusMotoristaNaoChamado();
+    if(_streamSubscriptionRequisicoes != null){
+      _streamSubscriptionRequisicoes.cancel();
+      _streamSubscriptionRequisicoes = null;
+    }
   }
 
 
@@ -337,11 +343,6 @@ class _PainelPassageiroState extends State<PainelPassageiro> {
   _statusAguardando(){
     _exibirCaixaEnderecoDestino = false;
     _alterarBotaoPrincipal("Cancelar", Color(0xff000000), () => _cancelarCorrida());
-
-   /* Position position = Position(
-        latitude: _dadosRequisicao["passageiro"]["latitude"],
-        longitude: _dadosRequisicao["passageiro"]["longitude"]
-    );*/
 
     Position position = Position(
         latitude: _localPassageiro.latitude,
@@ -523,8 +524,26 @@ class _PainelPassageiroState extends State<PainelPassageiro> {
   _statusConfirmada(){
     if(_streamSubscriptionRequisicoes != null){
       _streamSubscriptionRequisicoes.cancel();
+      _streamSubscriptionRequisicoes = null;
       _exibirCaixaEnderecoDestino = true;
       _alterarBotaoPrincipal("Chamar Motorista", Color(0xffe51b23), () => _chamarMotorista());
+
+      Position position = Position(
+          latitude: _localPassageiro.latitude,
+          longitude: _localPassageiro.longitude
+      );
+      _exibirMarcadorPassageiro(position);
+      _myLocation =  CameraPosition(
+        target: LatLng(position.latitude, position.longitude),
+        zoom: 19,
+      );
+      _moveCamera(_myLocation);
+
+      setState(() {
+        _isLoadingRequest = true;
+        _isLoadingLocation = true;
+      });
+
       _dadosRequisicao = {};
     }
   }
@@ -607,7 +626,7 @@ class _PainelPassageiroState extends State<PainelPassageiro> {
         Map<String, dynamic> dados = snapshot.data();
 
         _dadosRequisicao = dados;
-        _idRequisicao = dados['id_requisicao'];
+        _idRequisicao = dados['id'];
 
         switch(dados['status']){
           case StatusRequisicao.AGUARDANDO:
@@ -645,6 +664,7 @@ class _PainelPassageiroState extends State<PainelPassageiro> {
   void dispose() {
     super.dispose();
     _streamSubscriptionRequisicoes.cancel();
+    _streamSubscriptionRequisicoes = null;
   }
 
   @override

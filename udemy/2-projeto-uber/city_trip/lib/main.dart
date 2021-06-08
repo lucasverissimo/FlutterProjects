@@ -24,8 +24,8 @@ void main(){
   runApp(
     MaterialApp(
       debugShowCheckedModeBanner: false,
-      //home: SplashScreen(),
-      home: Home(),
+      home: SplashScreen(),
+      //home: Home(),
       theme: temaPadrao,
       initialRoute: "/",
       onGenerateRoute: Rotas.gerarRotas,
