@@ -39,6 +39,7 @@ class _ProfileState extends State<Profile> {
       r = await UserController.loadingInfoProfile(id: widget.id);
     }
 
+
     setState(() {
       _users = r;
       _loading = false;
@@ -183,7 +184,7 @@ class _ProfileState extends State<Profile> {
                           Text(
                             _users['numberPosts'] == null
                                 ? "0"
-                                : _users['numberPosts'].toString(),
+                                :  '120',//_users['numberPosts'].toString(),
                             style: TextStyle(fontSize: 20, color: Color(
                                 0xfffe386b)),),
                           Text("Postagens",
@@ -196,7 +197,7 @@ class _ProfileState extends State<Profile> {
                         children: [
                           Text(
                             _users['numberFollowers'] == null
-                                ? "0"
+                                ? '1.2k'
                                 : _users['numberFollowers'].toString(),
                             style: TextStyle(fontSize: 20, color: Color(
                                 0xfffe386b)),),
