@@ -10,20 +10,13 @@ class Contador extends StatefulWidget {
 }
 
 class _ContadorState extends State<Contador> {
-/*
-  int _contador = 0;
-
-  _incrementar(){
-    setState(() {
-      _contador++;
-    });
-  }
-*/
 
   Controller controller = Controller();
 
   @override
   Widget build(BuildContext context) {
+
+    print("buildou");
     return Scaffold(
       appBar: AppBar(
         title: Text("Contador"),
@@ -46,7 +39,7 @@ class _ContadorState extends State<Contador> {
               padding: EdgeInsets.all(10),
               child: ElevatedButton(
                 child: Text("Incrementar", style: TextStyle(color: Colors.white),),
-                onPressed: () => controller.incrementar(),
+                 onPressed: () => controller.incrementar(),
               ),
             ),
           ],

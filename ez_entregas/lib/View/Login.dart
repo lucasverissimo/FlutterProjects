@@ -1,0 +1,1 @@
+// tela de autenticação. Ter componente reaproveitavel para logar tanto em um botão específico quanto antes de confirmar um pedido.

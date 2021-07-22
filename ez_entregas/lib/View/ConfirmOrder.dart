@@ -1,0 +1,1 @@
+// tela de confirmação final de pedido (antes de realmente efetua-lo), com informação de forma de pagamento, endereço de entrega e produtos adicionados.
