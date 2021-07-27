@@ -1,8 +1,9 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:ez_entregas/Components/ProductCategory.dart';
+import 'package:ez_entregas/Components/ProductCategoryVertical.dart';
+import 'package:ez_entregas/Components/ProductCategoryHorizontal.dart';
 
-Widget listProducts(String idCategory, BuildContext context){
+Widget listProducts(String idCategory, BuildContext context, {typeList = 'vertical'}){
 
 
 
@@ -24,17 +25,41 @@ Widget listProducts(String idCategory, BuildContext context){
             ),
           ),
         ),
-        ListView.builder(
-          itemCount: 5,
-          shrinkWrap: true,
-          physics: NeverScrollableScrollPhysics(),
-          itemBuilder: (BuildContext context, int index){
-            print(index == 4);
-            return Padding(
-              padding: EdgeInsets.only(bottom: index == 4 ? 0 : 10, top: 20),
-              child: productCategory('id', context),
-            );
-          }
+        Container(
+            constraints: typeList == 'vertical' ? BoxConstraints(
+              maxHeight: double.infinity,
+            )
+            : BoxConstraints(
+              minHeight: 400,
+              maxHeight: 450,
+            ),
+          child: ListView.builder(
+              itemCount: 5,
+              shrinkWrap: typeList == 'vertical' ? true : false,
+              physics: typeList == 'vertical' ? NeverScrollableScrollPhysics() : AlwaysScrollableScrollPhysics(),
+              scrollDirection: typeList == 'vertical' ? Axis.vertical : Axis.horizontal,
+              itemBuilder: (BuildContext context, int index){
+
+                if(typeList == 'vertical') {
+                  return Padding(
+                    padding: EdgeInsets.only(bottom: index == 4 ? 0 : 10, top: 20),
+                    child: productCategoryVertical('id', context),
+                  );
+                }else
+                if(typeList == 'horizontal'){
+                  return Padding(
+                    padding: EdgeInsets.only(left: 10, right: 10, top: 20),
+                    child: Container(
+                      height: 400,
+                      child: productCategoryHorizontal('id', context),
+                    ),
+                  );
+                }else{
+                  return Container();
+                }
+
+              }
+          ),
         )
       ],
     ),

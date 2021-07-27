@@ -1,7 +1,7 @@
 // tela inicial com menu lateral, navegação em abas e lista de produtos.
 import 'package:ez_entregas/View/tabs/AccountMenu.dart';
 import 'package:ez_entregas/View/tabs/HomeScreen.dart';
-import 'package:ez_entregas/View/tabs/OrdersList.dart';
+import 'package:ez_entregas/View/OrdersList.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/painting.dart';
 import 'package:flutter/services.dart';
@@ -25,14 +25,14 @@ class _HomeState extends State<Home> with SingleTickerProviderStateMixin {
     _tabController = TabController(
         length: 2,
         vsync: this,
-        initialIndex: 0
+        initialIndex: 1
     );
   }
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text("Seja bem-vindo!", style: TextStyle(color: Color(0xfff76636)),),
+        title: Text("Ez Entregas Delivery!", style: TextStyle(color: Color(0xfff76636)),),
         actions: [
           IconButton(
               icon: Icon(Icons.shopping_cart_outlined),
@@ -55,6 +55,7 @@ class _HomeState extends State<Home> with SingleTickerProviderStateMixin {
       ),
       body: TabBarView(
           controller: _tabController,
+          physics: NeverScrollableScrollPhysics(),
           children: [
             HomeScreen(),
            // OrdersList(),

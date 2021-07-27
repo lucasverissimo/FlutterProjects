@@ -1,11 +1,11 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 
-Widget productCategory(String idCategory, BuildContext context){
+Widget productCategoryVertical(String idCategory, BuildContext context){
 
   double widthImage = (MediaQuery.of(context).size.width / 100) * 10;
   double widthInfos = (MediaQuery.of(context).size.width / 100) * 68;
-  print(widthImage);
+
 
   String nomeProduto = 'Hamburguer com molho Chik Fill';
   String descricaoProduto = 'Hamburguer 250g, tomate, alface, molho chik fill, bacon e molho a moda da casa.';
