@@ -166,20 +166,22 @@ class _HomeState extends State<Home> with SingleTickerProviderStateMixin {
             AccountMenu(),
           ]
       ),
-      bottomNavigationBar: TabBar(
-        controller: _tabController,
-        labelColor: Color(0xfff76636),
-        unselectedLabelColor: Color(0xffdddddd),
-        /*indicator: UnderlineTabIndicator(
+      bottomNavigationBar: SafeArea(
+          child: TabBar(
+              controller: _tabController,
+              labelColor: Color(0xfff76636),
+              unselectedLabelColor: Color(0xffdddddd),
+              /*indicator: UnderlineTabIndicator(
           borderSide: BorderSide(color: Color(0xfff76636), width: 1.0),
           insets: EdgeInsets.fromLTRB(100.0, 0.0, 100.0, 48.0),
         ),*/
-        overlayColor: MaterialStateProperty.all<Color>(Colors.transparent),
-        tabs: [
-          Tab(icon: Icon(Icons.home_outlined,),),
-      //    Tab(icon: Icon(Icons.list),),
-          Tab(icon: Icon(Icons.account_circle_outlined),)
-        ]
+              overlayColor: MaterialStateProperty.all<Color>(Colors.transparent),
+              tabs: [
+                Tab(icon: Icon(Icons.home_outlined,),),
+                //    Tab(icon: Icon(Icons.list),),
+                Tab(icon: Icon(Icons.account_circle_outlined),)
+              ]
+          ),
       ),
     );
   }
