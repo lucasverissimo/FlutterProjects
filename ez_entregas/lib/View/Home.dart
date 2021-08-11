@@ -1,4 +1,7 @@
 // tela inicial com menu lateral, navegação em abas e lista de produtos.
+import 'dart:ui';
+
+import 'package:ez_entregas/Components/AppBarDefault.dart';
 import 'package:ez_entregas/View/tabs/AccountMenu.dart';
 import 'package:ez_entregas/View/tabs/HomeScreen.dart';
 import 'package:ez_entregas/View/OrdersList.dart';
@@ -16,43 +19,144 @@ class Home extends StatefulWidget {
 class _HomeState extends State<Home> with SingleTickerProviderStateMixin {
 
   TabController _tabController;
+  bool showDrawer = true;
+  List<Map<String, dynamic>> _categorias = [
+    {"nome": "Lanches", "id":"id"},
+    {"nome": "Bebidas", "id":"id"},
+    {"nome": "Combos", "id":"id"},
+    {"nome": "Sobremesas", "id":"id"},
+    {"nome": "Promoções", "id":"id"},
+  ];
 
   @override
   void initState() {
     super.initState();
-    SystemChrome.setEnabledSystemUIOverlays([]);
+    // SystemChrome.setEnabledSystemUIOverlays([]);
+    SystemChrome.setEnabledSystemUIOverlays(SystemUiOverlay.values);
 
     _tabController = TabController(
         length: 2,
         vsync: this,
-        initialIndex: 1
+        initialIndex: 0
     );
   }
   @override
   Widget build(BuildContext context) {
+
+    double heightListView = MediaQuery.of(context).size.height;
+    double heightHeaderListView = (MediaQuery.of(context).size.height / 100) * 20;
+    double heightTitleMenu = (MediaQuery.of(context).size.height / 100) * 5;
+    double heightListMenu = (MediaQuery.of(context).size.height / 100) * 70;
+    double heightFooterMenu = (MediaQuery.of(context).size.height / 100) * 5;
+
     return Scaffold(
-      appBar: AppBar(
-        title: Text("Ez Entregas Delivery!", style: TextStyle(color: Color(0xfff76636)),),
-        actions: [
-          IconButton(
-              icon: Icon(Icons.shopping_cart_outlined),
-              onPressed: (){}
+      appBar: appBarDefault("Ez Entregas Delivery!"),
+      drawer: showDrawer == true ? Drawer(
+        child: Container(
+          decoration: BoxDecoration(
+            color: Colors.white,
           ),
-        ],
-      ),
-      drawer: Drawer(
-        child: ListView(
-          padding: EdgeInsets.zero,
-          children: [
-            DrawerHeader(
-              child: Text("teste"),
-            ),
-            ListTile(
-              title: Text("Opção Menu"),
-            ),
-          ],
+          height: heightListView,
+          child: ListView(
+            padding: EdgeInsets.zero,
+            children: [
+              Container(
+                height: heightHeaderListView,
+                child:  DrawerHeader(
+                  decoration: ShapeDecoration(
+                    color: Colors.white,
+                    shape: Border.all(
+                      color: Colors.transparent,
+                      width: 0
+                    )
+                  ),
+                  child: Center(
+                    child: Image.asset("assets/images/logo.png", width: 200,),
+                  ),
+                ),
+              ),
+              Container(
+                height: heightTitleMenu,
+               /* decoration: BoxDecoration(
+                  color: Color(0xfff0f0f0),
+                ),*/
+                child: Center(
+                  child: Text(
+                    "CATEGORIAS",
+                    style: TextStyle(
+                      color: Color(0xff888888),
+                      fontSize: 14,
+                      fontWeight: FontWeight.bold
+                    ),
+                  ),
+                ),
+              ),
+              Container(
+                height: heightListMenu,
+                decoration: BoxDecoration(
+                  color: Color(0xffffffff)
+                ),
+                child: Padding(
+                  padding: EdgeInsets.only(left: 10, right: 10),
+                  child: ListView(
+                    children: _categorias.map((Map<String, dynamic> item) {
+
+                      return Container(
+                        decoration: BoxDecoration(
+                          border: Border(
+                            bottom: BorderSide(
+                              width: 1,
+                              color: Color(0xfff0f0f0),
+                            ),
+                          ),
+                        ),
+                        child: Material(
+                          color: Colors.transparent,
+                          child: InkWell(
+                            child: Padding(
+                              padding: EdgeInsets.fromLTRB(5, 20, 20, 20),
+                              child: Text(
+                                item['nome'].toString().toUpperCase(),
+                                style: TextStyle(
+                                  fontSize: 13,
+                                ),
+                              ),
+                            ),
+                            onTap: () {
+                              print(item);
+                              Navigator.pushNamed(
+                                  context, "/category", arguments: "idCategoria"
+                              );
+                            },
+                          ),
+                        ),
+                      );
+
+                      /*return ListTile(
+                        title: Text(item['nome']),
+                        onTap: (){
+                          print(item);
+                        },
+
+                    );*/
+
+                    },).toList(),
+                  ),
+                ),
+              ),
+              Container(
+                height: heightFooterMenu,
+                decoration: BoxDecoration(
+                  color: Color(0xfff76636),
+                ),
+                child: Center(
+                  child: Text("Desenvolvido por: Ez Entregas", style: TextStyle(fontSize: 12, color: Colors.white),),
+                ),
+              ),
+            ],
+          ),
         ),
-      ),
+      ) : null,
       body: TabBarView(
           controller: _tabController,
           physics: NeverScrollableScrollPhysics(),

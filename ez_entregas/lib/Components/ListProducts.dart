@@ -7,6 +7,24 @@ Widget listProducts(String idCategory, BuildContext context, {typeList = 'vertic
 
 
 
+  Map<String, dynamic> productMap = {
+    "categoria": "ecnGoydHzXmpy1RTxPEe",
+    "imagem": "https://firebasestorage.googleapis.com/v0/b/ez-entregas.appspot.com/o/produtos%2FZ4YAFrPC1Yf1ppDMhPKT.jpg?alt=media&token=1d49dbc0-a56c-4ab1-a9f4-06637bdf7ea1",
+    "nome": "Lasanha",
+    "qtdEstoque": 0,
+    "categoriasComplementar": [
+      "FFWCiWBvCKpx5dLG9XkW",
+      "ZcFpbMdjzY84So0aHjfh"
+    ],
+    "preco": "27.35",
+    "id": "Z4YAFrPC1Yf1ppDMhPKT",
+    "exibirProduto": true,
+    "nomeImagem": "Z4YAFrPC1Yf1ppDMhPKT.jpg",
+    "desconto": 50,
+    "descricao": "Lasanha de carne moida com presunto.",
+    "possuiEstoque": false
+  };
+
   return Container(
     padding: EdgeInsets.only(top: 10),
     child: Column(
@@ -14,7 +32,7 @@ Widget listProducts(String idCategory, BuildContext context, {typeList = 'vertic
       crossAxisAlignment: CrossAxisAlignment.stretch,
       children: [
         Padding(
-          padding: EdgeInsets.only(top: 25),
+          padding: EdgeInsets.only(bottom: 10),
           child: Text(
             "Promoções do dia!".toUpperCase(),
             textAlign: TextAlign.center,
@@ -43,7 +61,7 @@ Widget listProducts(String idCategory, BuildContext context, {typeList = 'vertic
                 if(typeList == 'vertical') {
                   return Padding(
                     padding: EdgeInsets.only(bottom: index == 4 ? 0 : 10, top: 20),
-                    child: productCategoryVertical('id', context),
+                    child: productCategoryVertical(productMap, context),
                   );
                 }else
                 if(typeList == 'horizontal'){
@@ -51,7 +69,7 @@ Widget listProducts(String idCategory, BuildContext context, {typeList = 'vertic
                     padding: EdgeInsets.only(left: 10, right: 10, top: 20),
                     child: Container(
                       height: 400,
-                      child: productCategoryHorizontal('id', context),
+                      child: productCategoryHorizontal(productMap, context),
                     ),
                   );
                 }else{

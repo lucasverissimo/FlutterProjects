@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:ez_entregas/View/Home.dart';
+import 'package:ez_entregas/Services/Routes.dart';
 
 final ThemeData temaPadrao = ThemeData(
     primaryColor: Color(0xfff76636),
@@ -24,6 +25,8 @@ void main() {
       debugShowCheckedModeBanner: false,
       home: Home(),
       theme: temaPadrao,
+      initialRoute: "/",
+      onGenerateRoute: Routes.generateRoutes,
     ),
   );
 }

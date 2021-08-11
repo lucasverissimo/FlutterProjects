@@ -1,7 +1,8 @@
+import 'package:ez_entregas/Model/ProductModel.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 
-Widget productCategoryHorizontal(String idCategory, BuildContext context){
+Widget productCategoryHorizontal(Map<String, dynamic> productMap, BuildContext context){
 
   double widthImage = (MediaQuery.of(context).size.width / 100) * 40;
   double widthInfos = (MediaQuery.of(context).size.width / 100) * 68;
@@ -74,7 +75,10 @@ Widget productCategoryHorizontal(String idCategory, BuildContext context){
                   ElevatedButton.icon(
                     icon: Icon(Icons.add_sharp, color: Color(0xff40cf43),),
                     onPressed: (){
-                      print("Clicou em comprar");
+
+                      ProductModel product = ProductModel(productMap);
+                      Navigator.pushNamed(context, '/product', arguments: product);
+
                     },
                     label: Text("Detalhes", style: TextStyle(fontSize: 18,color: Color(0xff40cf43))),
                     style: ButtonStyle(

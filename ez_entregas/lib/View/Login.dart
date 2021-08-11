@@ -4,7 +4,8 @@ import 'package:ez_entregas/Components/DefaultInputTextField.dart';
 import 'package:flutter/material.dart';
 
 class Login extends StatefulWidget {
-  const Login({Key key}) : super(key: key);
+  bool isBuy;
+  Login({this.isBuy = false});
 
   @override
   _LoginState createState() => _LoginState();
@@ -41,7 +42,9 @@ class _LoginState extends State<Login> {
             textField(_textPass, 'Senha:', isPassword: true),
             submitButton("Cadastrar", (){ print("Clicou em cadastrar");}, colorBorder: Color(0xfff76636), colorText: Color(0xfff76636)),
             GestureDetector(
-              onTap: (){ print("Criar conta");},
+              onTap: (){
+                Navigator.pushNamed(context, "/userRegister");
+              },
               child: Padding(
                 padding: EdgeInsets.only(top: 10, bottom: 15),
                 child: Text(

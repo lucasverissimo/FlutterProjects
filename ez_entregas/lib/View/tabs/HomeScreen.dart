@@ -35,7 +35,15 @@ class _HomeScreenState extends State<HomeScreen> {
       child: Column(
         children: [
           carouselImages(imagesBanner, infoBanners, height: heightBanner, borderRadius: 6),
+          Padding(
+            padding: EdgeInsets.only(top: 20),
+            child: Container(),
+          ),
           listProducts('idcategoria', context, typeList: 'horizontal'),
+          Padding(
+            padding: EdgeInsets.only(top: 20),
+            child: Container(),
+          ),
           listProducts('idcategoria', context, typeList: 'vertical'),
         ],
       ),
