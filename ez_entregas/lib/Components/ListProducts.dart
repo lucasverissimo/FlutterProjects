@@ -16,7 +16,7 @@ Widget listProducts(String idCategory, BuildContext context, {typeList = 'vertic
       "FFWCiWBvCKpx5dLG9XkW",
       "ZcFpbMdjzY84So0aHjfh"
     ],
-    "preco": "27.35",
+    "preco": "19.90",
     "id": "Z4YAFrPC1Yf1ppDMhPKT",
     "exibirProduto": true,
     "nomeImagem": "Z4YAFrPC1Yf1ppDMhPKT.jpg",

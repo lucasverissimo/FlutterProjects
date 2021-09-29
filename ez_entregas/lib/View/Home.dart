@@ -37,7 +37,7 @@ class _HomeState extends State<Home> with SingleTickerProviderStateMixin {
     _tabController = TabController(
         length: 2,
         vsync: this,
-        initialIndex: 0
+        initialIndex: 1
     );
   }
   @override

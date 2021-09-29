@@ -3,6 +3,9 @@ import 'package:ez_entregas/View/NotFound.dart';
 import 'package:ez_entregas/View/Category.dart';
 import 'package:ez_entregas/View/Product.dart';
 import 'package:ez_entregas/View/UserRegister.dart';
+import 'package:ez_entregas/View/UserAccount.dart';
+import 'package:ez_entregas/View/AddressList.dart';
+import 'package:ez_entregas/View/OrdersList.dart';
 
 import 'package:flutter/material.dart';
 
@@ -22,6 +25,15 @@ class Routes{
         break;
       case "/product":
         return MaterialPageRoute(builder: (_) => Product(args));
+        break;
+      case "/userAccount":
+        return MaterialPageRoute(builder: (_) => UserAccoount(args));
+        break;
+      case "/addressList":
+        return MaterialPageRoute(builder: (_) => AddressList());
+        break;
+      case "/ordersList":
+        return MaterialPageRoute(builder: (_) => OrdersList());
         break;
 
       default:

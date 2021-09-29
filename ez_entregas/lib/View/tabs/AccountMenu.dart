@@ -54,7 +54,9 @@ class _AccountMenuState extends State<AccountMenu> {
               ),
             ),
             iconButton(
-              "Meus Pedidos", (){},
+              "Meus Pedidos", (){
+              Navigator.pushNamed(context, "/ordersList");
+            },
               Icon(Icons.shopping_cart,
               color: Color(0xffcccccc),),
               colorText: Color(0xff000000),
@@ -63,7 +65,9 @@ class _AccountMenuState extends State<AccountMenu> {
               description: "Consulte seus ultimos pedidos"
             ),
             iconButton(
-                "Dados", (){},
+                "Dados", (){
+                  Navigator.pushNamed(context, "/userAccount", arguments: "idUsuario");
+            },
                 Icon(Icons.account_circle,
                   color: Color(0xffcccccc),),
                 colorText: Color(0xff000000),
@@ -72,7 +76,9 @@ class _AccountMenuState extends State<AccountMenu> {
                 description: "Seus dados de cadastro"
             ),
             iconButton(
-                "Endereços", (){},
+                "Endereços", (){
+                  Navigator.pushNamed(context, "/addressList");
+                },
                 Icon(Icons.motorcycle_sharp,
                   color: Color(0xffcccccc),),
                 colorText: Color(0xff000000),

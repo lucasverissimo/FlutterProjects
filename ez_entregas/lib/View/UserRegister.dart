@@ -35,7 +35,7 @@ class _UserRegisterState extends State<UserRegister> {
   @override
   Widget build(BuildContext context) {
 
-    _users.cName.text = "Lucas Garcez Jorge";
+    // _users.cName.text = "Lucas Garcez Jorge";
 
     return Scaffold(
       appBar: appBarDefault("Cadastrar usuário"),
@@ -64,6 +64,7 @@ class _UserRegisterState extends State<UserRegister> {
             ),
             textField(_users.cName, "Nome:"),
             textField(_users.cEmail, "E-mail:"),
+            textField(_users.cCpf, "CPF:"),
             textField(_users.cPass, "Senha:"),
             textField(_users.cPassConf, "Confirmar senha:"),
             Padding(

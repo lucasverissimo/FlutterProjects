@@ -26,6 +26,8 @@ class _ProductState extends State<Product> {
   bool _hasRadio = false;
   int _qtdRadio = 0;
   int _maxItems = 0;
+  String _precoPromocional = "";
+  String _precoProduto = "";
 
   List<Map<String, dynamic>> _radioProducts = [
     {
@@ -111,7 +113,7 @@ class _ProductState extends State<Product> {
       "tipoSelecao": "checkbox",
       "ordem": 1,
       "maximo": 2,
-      "exibirQuantidade": false
+      "exibirQuantidade": true
     }
   ];
 
@@ -121,7 +123,9 @@ class _ProductState extends State<Product> {
         _qtd = _qtd - 1;
         _messageErrorQtd = "";
       });
+
     }
+    _calcPrice();
   }
 
   _moreQtd() {
@@ -149,13 +153,42 @@ class _ProductState extends State<Product> {
         _qtd = _qtd + 1;
       });
     }
+
+    _calcPrice();
   }
 
-  void validateGroup(String value, String type, String groupName, {qtd = 1}) {
+  void validateGroup(String value, String type, String groupName, {qtd = 1, String price = '0.00', bool qtdIncrement = true}) {
     for (int i = 0; i < _validationGroup.length; i++) {
       if (_validationGroup[i]["groupName"] == groupName) {
         if (type == "radio") {
+
           _validationGroup[i]["groupValue"] = value;
+
+          if(_validationGroup[i]["groupPrice"] != null){
+
+            if(_validationGroup[i]["groupPrice"] == '0.00'){
+
+              if(price != '0.00'){
+                _validationGroup[i]["groupPrice"] = price;
+              }
+            }else{
+              if(price != '0.00'){
+
+              }else{
+                _validationGroup[i]["groupPrice"] = price;
+              }
+            }
+
+          }else{
+
+            if(price != '0.00'){
+              _validationGroup[i]["groupPrice"] = price;
+            }else{
+              _validationGroup[i]["groupPrice"] = '0.00';
+            }
+
+          }
+
         } else {
 
           if(type == "checkbox") {
@@ -171,30 +204,70 @@ class _ProductState extends State<Product> {
                   gp[c]["qtd"] = qtd;
                 }
 
-
                 findValue = true;
                 break;
               }
             }
 
             if (findValue == false) {
-              gp.add({"id": value, "qtd": qtd});
+              gp.add({"id": value, "qtd": qtd, 'price':price});
               _validationGroup[i]["groupValue"] = gp;
             } else {
               _validationGroup[i]["groupValue"] = gp;
             }
 
+
           }
 
         }
 
-        print(_validationGroup);
         setState(() {
           _validationGroup = _validationGroup;
         });
+
+        _calcPrice();
         break;
       }
     }
+  }
+
+  void _calcPrice(){
+
+    double newPrice = 0.0;
+    for(int i = 0; i < _validationGroup.length; i++){
+      Map<String, dynamic> group = _validationGroup[i];
+      // print(group);
+      if(group["groupType"] == "radio"){
+        if(group["groupPrice"] != null) {
+          if(group["groupPrice"] != "0.00") {
+            newPrice = newPrice + (_qtd * double.parse(group["groupPrice"]));
+          }
+        }
+      }else{
+        if(group["groupValue"].length > 0){
+          for(int c = 0; c < group["groupValue"].length; c++){
+            Map<String, dynamic> item = group["groupValue"][c];
+            double priceItem = item["qtd"] * double.parse(item['price']);
+            newPrice = newPrice + (_qtd * priceItem);
+          }
+        }
+      }
+
+    }
+
+    print(newPrice);
+    if(widget.product.discount > 0){
+      double priceDiscount = (double.parse(widget.product.price) / 100) * widget.product.discount;
+      double pricePromo = double.parse(widget.product.price) - priceDiscount;
+      newPrice = (pricePromo * _qtd) + newPrice;
+    }else {
+      newPrice = (double.parse(widget.product.price) * _qtd) + newPrice;
+    }
+
+
+    setState(() {
+      _precoProduto = newPrice.toStringAsFixed(2);
+    });
   }
 
   @override
@@ -258,7 +331,16 @@ class _ProductState extends State<Product> {
       });
     }
 
-    print(_validationGroup);
+    if(_product.discount > 0){
+      setState(() {
+        _precoPromocional = _product.price;
+        _precoProduto = _product.finalProductPrice();
+      });
+    }else{
+      setState(() {
+        _precoProduto = _product.price;
+      });
+    }
   }
 
   @override
@@ -386,12 +468,22 @@ class _ProductState extends State<Product> {
                               fontSize: 14, fontWeight: FontWeight.bold),
                         ),
                       ) : Container(),
+
+                      c["tipoSelecao"] == "radio" ?
+                      Padding(
+                        padding: EdgeInsets.only(bottom: 10),
+                        child: Text(
+                          "Selecione ao menos uma opção abaixo!",
+                          style: TextStyle(
+                              fontSize: 14, fontWeight: FontWeight.bold),
+                        ),
+                      ) : Container(),
                       ListView.builder(
                         itemCount: c["products"].length,
                         shrinkWrap: true,
                         physics: NeverScrollableScrollPhysics(),
                         itemBuilder: (context, index2) {
-                          //print(c["products"][index2]);
+
                           Map<String, dynamic> p = c["products"][index2];
 
                           String nomeP = p["nome"];
@@ -419,7 +511,11 @@ class _ProductState extends State<Product> {
                                   groupValue: _validationGroup[index]
                                       ["groupValue"],
                                   onChanged: (val) {
-                                    validateGroup(p["id"], "radio", c["id"]);
+                                    if(p["preco"] != "0.00"){
+                                      validateGroup(p["id"], "radio", c["id"], price: p["preco"]);
+                                    }else{
+                                      validateGroup(p["id"], "radio", c["id"]);
+                                    }
                                   });
                             } else {
 
@@ -451,7 +547,13 @@ class _ProductState extends State<Product> {
                                       child: submitButton("-", () {
                                         if(qtd > 0) {
                                           qtd = qtd - 1;
-                                          validateGroup(p["id"], "checkbox", c["id"], qtd: qtd);
+
+                                          if(p["preco"] != "0.00"){
+                                            validateGroup(p["id"], "checkbox", c["id"], qtd: qtd, price: p["preco"], qtdIncrement: false);
+                                          }else{
+                                            validateGroup(p["id"], "checkbox", c["id"], qtd: qtd, qtdIncrement: false);
+                                          }
+
                                           setState(() {
                                             _maxItems = _maxItems - 1;
                                           });
@@ -481,13 +583,22 @@ class _ProductState extends State<Product> {
                                       child: submitButton("+", () {
                                           if(c["maximo"] == 0) {
                                             qtd = qtd + 1;
-                                            validateGroup(p["id"], "checkbox", c["id"],qtd: qtd);
+
+                                            if(p["price"] != "0.00"){
+                                              validateGroup(p["id"], "checkbox", c["id"], qtd: qtd, price: p["preco"]);
+                                            }else{
+                                              validateGroup(p["id"], "checkbox", c["id"], qtd: qtd);
+                                            }
                                           }else{
 
                                             if(_maxItems < c["maximo"]){
 
                                                 qtd = qtd + 1;
-                                                validateGroup(p["id"], "checkbox",c["id"], qtd: qtd);
+                                                if(p["price"] != "0.00"){
+                                                  validateGroup(p["id"], "checkbox", c["id"], qtd: qtd, price: p["preco"]);
+                                                }else{
+                                                  validateGroup(p["id"], "checkbox", c["id"], qtd: qtd);
+                                                }
                                                 setState(() {
                                                   _maxItems = _maxItems + 1;
                                                 });
@@ -531,17 +642,31 @@ class _ProductState extends State<Product> {
                                         if(c["maximo"] != null && c["maximo"] > 0) {
 
                                           if(_maxItems < c["maximo"]){
-                                            validateGroup(p["id"], "checkbox", c["id"]);
+
+                                            if(p["price"] != "0.00"){
+                                              validateGroup(p["id"], "checkbox", c["id"], price: p["preco"]);
+                                            }else{
+                                              validateGroup(p["id"], "checkbox", c["id"]);
+                                            }
                                             setState(() {
                                               _maxItems = _maxItems + 1;
                                             });
                                           }
 
                                         }else{
-                                          validateGroup(p["id"], "checkbox", c["id"]);
+                                          if(p["price"] != "0.00"){
+                                            validateGroup(p["id"], "checkbox", c["id"], price: p["preco"]);
+                                          }else{
+                                            validateGroup(p["id"], "checkbox", c["id"]);
+                                          }
                                         }
                                       }else{
-                                        validateGroup(p["id"], "checkbox", c["id"], qtd: 0);
+
+                                        if(p["price"] != "0.00"){
+                                          validateGroup(p["id"], "checkbox", c["id"], qtd:0, price: p["preco"]);
+                                        }else{
+                                          validateGroup(p["id"], "checkbox", c["id"], qtd: 0);
+                                        }
                                         setState(() {
                                           _maxItems = _maxItems - 1;
                                         });
@@ -567,7 +692,7 @@ class _ProductState extends State<Product> {
                 ? Padding(
                     padding: EdgeInsets.only(bottom: 10),
                     child: Text(
-                      "R\$ " + _product.price.replaceAll('.', ','),
+                      "R\$ " + _precoPromocional.replaceAll('.', ','),
                       style: TextStyle(
                           fontSize: 20,
                           color: Color(0xff888888),
@@ -578,7 +703,7 @@ class _ProductState extends State<Product> {
             Padding(
               padding: EdgeInsets.only(bottom: 20),
               child: Text(
-                _product.finalProductPrice().replaceAll('.', ','),
+                "R\$ " +_precoProduto.replaceAll('.', ','),
                 style: TextStyle(
                     fontSize: 28,
                     color: Color(0xff40cf43),

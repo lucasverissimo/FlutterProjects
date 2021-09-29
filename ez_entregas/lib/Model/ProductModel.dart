@@ -33,9 +33,9 @@ class ProductModel{
     String newPrice;
     if(this.discount > 0){
       double priceDiscount = (price / 100) * this.discount;
-      newPrice = 'R\$ '+(price - priceDiscount).toStringAsFixed(2);
+      newPrice = (price - priceDiscount).toStringAsFixed(2);
     }else{
-      newPrice = 'R\$ '+price.toStringAsFixed(2);
+      newPrice = price.toStringAsFixed(2);
     }
 
     return newPrice;
